@@ -3,6 +3,24 @@
 
 This repository contains starter code for the **Software Engineering for Data Scientists** final project. 
 
+### Overview
+This project helps managers track employee performance and predict who might be at risk of being recruited by competitors. It features an interactive dashboard where users can:
+
+View individual or team productivity trends
+
+See an employee’s or team’s recruitment risk
+
+The dashboard is built using FastHTML and pulls data from the employee_events database through a custom Python API.
+
+### What’s Included
+SQL Queries: To fetch key performance and risk data
+
+Python API: Simple functions to access database info without writing SQL
+
+FastHTML Dashboard: Interactive and user-friendly, based on our team’s existing codebase
+
+OOP Principles: Extended and customized the app using object-oriented design
+
 ### Repository Structure
 ```
 ├── README.md
@@ -79,3 +97,6 @@ erDiagram
   employee ||--o{ employee_events : "employee_id"
   notes }o--o{ employee_events : ""
 ```
+
+### Thanks
+Thanks to the Udacity DSND team and fellow developers for the strong foundation!
