@@ -7,11 +7,11 @@ from .sql_execution import QueryMixin, query
 
 # Define a subclass of QueryBase
 # called Employee
-def Employee(QueryBase):
+class Employee(QueryBase):
 
     # Set the class attribute `name`
     # to the string "employee"
-    self.name = "employee"
+    name = "employee"
 
 
     # Define a method called `names`
@@ -31,7 +31,7 @@ def Employee(QueryBase):
             first_name || ' ' || last_name AS full_name,
             employee_id
             FROM employee;"""
-        return query(sql_query)
+        return self.query(sql_query)
     
 
     # Define a method called `username`
@@ -51,7 +51,7 @@ def Employee(QueryBase):
             FROM employee
             WHERE employee_id = {id}
             """
-        return query(sql_query)
+        return self.query(sql_query)
 
 
     # Below is method with an SQL query
@@ -63,8 +63,7 @@ def Employee(QueryBase):
     # the sql query
     #### YOUR CODE HERE
     def model_data(self, id):
-
-        return f"""
+        sql_query = f"""
                     SELECT SUM(positive_events) positive_events
                          , SUM(negative_events) negative_events
                     FROM {self.name}
@@ -72,3 +71,4 @@ def Employee(QueryBase):
                         USING({self.name}_id)
                     WHERE {self.name}.{self.name}_id = {id}
                 """
+        return self.pandas_query(sql_query)

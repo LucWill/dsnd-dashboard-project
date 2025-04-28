@@ -1,11 +1,11 @@
 # Import any dependencies needed to execute sql queries
 from sqlite3 import connect
-from sql_execution import QueryMixin
+from .sql_execution import QueryMixin
 
 # Define a class called QueryBase
 # Use inheritance to add methods
 # for querying the employee_events database.
-def QueryBase(QueryMixin):
+class QueryBase(QueryMixin):
 
     # Create a class attribute called `name`
     # set the attribute to an empty string
@@ -32,17 +32,27 @@ def QueryBase(QueryMixin):
         # Use f-string formatting to set the name
         # of id columns used for joining
         # order by the event_date column
-        query = f"""
-            SELECT event_date,
-               SUM(positive_events) AS total_positive,
-               SUM(negative_events) AS total_negative
-            FROM {self.name}
-            WHERE {id} = ?
-            GROUP BY event_date
-            ORDER BY event_date
-            """
+        # query = f"""
+        #     SELECT event_date,
+        #        SUM(positive_events) AS total_positive,
+        #        SUM(negative_events) AS total_negative
+        #     FROM {self.name}
+        #     GROUP BY event_date
+        #     ORDER BY event_date
+        #     """
+        # e.first_name || ' ' || e.last_name AS employee_name,
+        query = f'''
+        SELECT
+            ev.event_date,
+            SUM(ev.positive_events) AS total_positive,
+            SUM(ev.negative_events) AS total_negative
+        FROM {self.name} AS e
+        JOIN employee_events AS ev ON e.{self.name}_id = ev.{self.name}_id
+        GROUP BY ev.event_date
+        ORDER BY ev.event_date
+        '''
         return super().pandas_query(query)
-    
+    # GROUP BY ev.event_date, e.first_name, e.last_name
 
     # Define a `notes` method that receives an id argument
     # This function should return a pandas dataframe
@@ -56,11 +66,10 @@ def QueryBase(QueryMixin):
         # so the query returns the notes
         # for the table name in the `name` class attribute
         query = f"""
-            SELECT n.note_date, n.note
-            FROM notes n
-            JOIN {self.name} e ON n.{id} = e.{id}
-            WHERE e.{id} = ?
-            ORDER BY n.note_date
+        SELECT notes.note_date, notes.note
+            FROM notes
+            JOIN {self.name} ON {self.name}.{self.name}_id = notes.{self.name}_id
+            WHERE {self.name}.{self.name}_id = {id}
             """
         return super().pandas_query(query)
 

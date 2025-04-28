@@ -10,14 +10,14 @@ class Team(QueryBase):
 
     # Set the class attribute `name`
     # to the string "team"
-    self.name = "team"
+    name = "team"
 
 
     # Define a `names` method
     # that receives no arguments
     # This method should return
     # a list of tuples from an sql execution
-    def name(self):
+    def names(self):
         
         # Query 5
         # Write an SQL query that selects
@@ -26,14 +26,14 @@ class Team(QueryBase):
         # in the database
         sql_query = """SELECT team_name, team_id
             FROM team;"""
-        return query(sql_query)
+        return self.query(sql_query)
     
 
     # Define a `username` method
     # that receives an ID argument
     # This method should return
     # a list of tuples from an sql execution
-    def username(self, id:str)
+    def username(self, id:str):
 
         # Query 6
         # Write an SQL query
@@ -59,7 +59,7 @@ class Team(QueryBase):
     #### YOUR CODE HERE
     def model_data(self, id):
 
-        return f"""
+        sql_query = f"""
             SELECT positive_events, negative_events FROM (
                     SELECT employee_id
                          , SUM(positive_events) positive_events
@@ -71,3 +71,4 @@ class Team(QueryBase):
                     GROUP BY employee_id
                    )
                 """
+        return self.pandas_query(sql_query)

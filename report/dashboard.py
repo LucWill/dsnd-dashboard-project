@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from employee_events import QueryBase, Employee, Team
 
 # import the load_model function from the utils.py file
-from .utils import load_model
+from utils import load_model
 
 """
 Below, we import the parent classes
@@ -46,7 +46,7 @@ class ReportDropdown(Dropdown):
         # call the employee_events method
         # that returns the user-type's
         # names and ids
-        return model.employee_events()
+        return model.names()
 
 
 # Create a subclass of base_components/BaseComponent
@@ -66,7 +66,7 @@ class Header(BaseComponent):
 
 # Create a subclass of base_components/MatplotlibViz
 # called `LineChart`
-class LineChart(BaseComponent, MatplotlibViz):
+class LineChart(MatplotlibViz):
     
     # Overwrite the parent class's `visualization`
     # method. Use the same parameters as the parent
@@ -114,7 +114,7 @@ class LineChart(BaseComponent, MatplotlibViz):
         # the border color and font color to black. 
         # Reference the base_components/matplotlib_viz file 
         # to inspect the supported keyword arguments
-        self.set_axis_styling(ax, border_color="black", font_color="black")
+        self.set_axis_styling(ax, bordercolor="black", fontcolor="black")
 
         
         # Set title and labels for x and y axis
@@ -125,7 +125,7 @@ class LineChart(BaseComponent, MatplotlibViz):
 
 # Create a subclass of base_components/MatplotlibViz
 # called `BarChart`
-class BarChart(BaseComponent, MatplotlibViz):
+class BarChart(MatplotlibViz):
 
     # Create a `predictor` class attribute
     # assign the attribute to the output
@@ -174,7 +174,7 @@ class BarChart(BaseComponent, MatplotlibViz):
         # pass the axis variable
         # to the `.set_axis_styling`
         # method
-        ax.set_axis_styling(ax, border_color="black", font_color="black")
+        self.set_axis_styling(ax, bordercolor="black", fontcolor="black")
  
 # Create a subclass of combined_components/CombinedComponent
 # called Visualizations       
