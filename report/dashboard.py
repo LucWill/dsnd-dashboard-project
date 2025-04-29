@@ -71,7 +71,7 @@ class BarChart(MatplotlibViz):
         pred = prob_column.mean() if model.name == 'team' else prob_column[0]
 
         # Create a colormap: green (safe) to red (risky)
-        cmap = mpl.cm.get_cmap('RdYlGn_r')  # reversed 'Red-Yellow-Green' colormap
+        cmap = mpl.cm.get_cmap('RdYlGn_r')
         color = cmap(pred)  # pred is between 0 and 1
 
         fig, ax = plt.subplots(figsize=(7, 3))
