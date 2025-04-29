@@ -1,4 +1,4 @@
-from fasthtml.common import *
+from fasthtml.common import Div, fast_app, serve, H1
 import matplotlib.pyplot as plt
 
 from employee_events import Employee, Team
@@ -17,12 +17,12 @@ from combined_components import FormGroup, CombinedComponent
 
 class ReportDropdown(Dropdown):
     """Dropdown component for selecting reports."""
-    
+
     def build_component(self, entity_id, model):
         """Build dropdown using the model's name as label."""
         self.label = model.name
         return super().build_component(entity_id, model)
-    
+
     def component_data(self, entity_id, model):
         """Return names and IDs for the dropdown options."""
         return model.names()
@@ -38,9 +38,9 @@ class Header(BaseComponent):
 
 class LineChart(MatplotlibViz):
     """Line chart visualization for cumulative event counts."""
-    
+
     def visualization(self, entity_id, model):
-        
+
         x_y_data = model.event_counts(entity_id).fillna(0)
         x_y_data = x_y_data.set_index("event_date").sort_index().cumsum()
         x_y_data.columns = ['Positive', 'Negative']
@@ -66,9 +66,8 @@ class BarChart(MatplotlibViz):
         data = model.model_data(entity_id)
         proba = self.predictor.predict_proba(data)
         prob_column = proba[:, 1]
-        
         pred = prob_column.mean() if model.name == 'team' else prob_column[0]
-        
+
         fig, ax = plt.subplots(figsize=(7, 3))
         ax.barh([''], [pred])
         ax.set_xlim(0, 1)
@@ -78,7 +77,7 @@ class BarChart(MatplotlibViz):
 
 class Visualizations(CombinedComponent):
     """Component combining line chart and bar chart visualizations."""
-    
+
     children = [LineChart(), BarChart()]
     outer_div_type = Div(cls='grid')
 
@@ -93,7 +92,7 @@ class NotesTable(DataTable):
 
 class DashboardFilters(FormGroup):
     """Form group for dashboard filters."""
-    
+
     id = "top-filters"
     action = "/update_data"
     method = "POST"
@@ -114,7 +113,7 @@ class DashboardFilters(FormGroup):
 
 class Report(CombinedComponent):
     """Main report component combining all dashboard parts."""
-    
+
     children = [Header(), DashboardFilters(), Visualizations(), NotesTable()]
 
 
@@ -125,19 +124,19 @@ report = Report()
 
 # Define routes
 @route('/')
-def get():
+def get_default():
     """Return default report for Employee with ID 1."""
     return report(1, Employee())
 
 
 @route('/employee/{id}')
-def get(id: str):
+def get_employee(id: str):
     """Return report page for an employee by ID."""
     return report(id, Employee())
 
 
 @route('/team/{id}')
-def get(id: str):
+def get_team(id: str):
     """Return report page for a team by ID."""
     return report(id, Team())
 
