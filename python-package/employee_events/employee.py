@@ -1,9 +1,9 @@
 from .query_base import QueryBase
-from .sql_execution import QueryMixin, query
+
 
 class Employee(QueryBase):
     """Represents the employee table in the database."""
-    
+
     name = "employee"
 
     def names(self):
@@ -25,7 +25,8 @@ class Employee(QueryBase):
         return self.query(sql_query)
 
     def model_data(self, id: int):
-        """Retrieve aggregated event data for a given employee as a pandas DataFrame."""
+        """Retrieve aggregated event data for a given employee
+            as a pandas DataFrame."""
         sql_query = f"""
             SELECT SUM(positive_events) AS positive_events,
                    SUM(negative_events) AS negative_events

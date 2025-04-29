@@ -6,6 +6,7 @@ import pandas as pd
 # Path to the employee_events database
 db_path = Path(__file__).parent / 'employee_events.db'
 
+
 class QueryMixin:
     """Provides methods for executing SQL queries."""
 
@@ -25,8 +26,10 @@ class QueryMixin:
         con.close()
         return results
 
+
 def query(func):
-    """Decorator to execute a generated SQL query and return a list of tuples."""
+    """Decorator to execute a generated SQL query and
+        return a list of tuples."""
     @wraps(func)
     def run_query(*args, **kwargs):
         query_string = func(*args, **kwargs)
@@ -35,5 +38,5 @@ def query(func):
         result = cursor.execute(query_string).fetchall()
         connection.close()
         return result
-    
+
     return run_query
