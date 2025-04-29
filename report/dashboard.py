@@ -1,5 +1,7 @@
 from fasthtml.common import Div, fast_app, serve, H1
 import matplotlib.pyplot as plt
+import matplotlib as mpl
+
 
 from employee_events import Employee, Team
 from utils import load_model
@@ -68,8 +70,12 @@ class BarChart(MatplotlibViz):
         prob_column = proba[:, 1]
         pred = prob_column.mean() if model.name == 'team' else prob_column[0]
 
+        # Create a colormap: green (safe) to red (risky)
+        cmap = mpl.cm.get_cmap('RdYlGn_r')  # reversed 'Red-Yellow-Green' colormap
+        color = cmap(pred)  # pred is between 0 and 1
+
         fig, ax = plt.subplots(figsize=(7, 3))
-        ax.barh([''], [pred])
+        ax.barh([''], [pred], color=color)
         ax.set_xlim(0, 1)
         ax.set_title('Predicted Recruitment Risk', fontsize=20)
         self.set_axis_styling(ax, bordercolor="black", fontcolor="black")
