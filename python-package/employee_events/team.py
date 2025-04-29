@@ -5,15 +5,15 @@ from .query_base import QueryBase
 from .sql_execution import QueryMixin, query
 
 # Create a subclass of QueryBase
-# called  `Team`
+# called  Team
 class Team(QueryBase):
 
-    # Set the class attribute `name`
+    # Set the class attribute name
     # to the string "team"
     name = "team"
 
 
-    # Define a `names` method
+    # Define a names method
     # that receives no arguments
     # This method should return
     # a list of tuples from an sql execution
@@ -29,7 +29,7 @@ class Team(QueryBase):
         return self.query(sql_query)
     
 
-    # Define a `username` method
+    # Define a username method
     # that receives an ID argument
     # This method should return
     # a list of tuples from an sql execution

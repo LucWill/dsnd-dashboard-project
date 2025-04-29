@@ -3,46 +3,30 @@ from pathlib import Path
 from functools import wraps
 import pandas as pd
 
-# Using pathlib, create a `db_path` variable
-# that points to the absolute path for the `employee_events.db` file
+# Path to the employee_events database
 db_path = Path(__file__).parent / 'employee_events.db'
 
-# OPTION 1: MIXIN
-# Define a class called `QueryMixin`
 class QueryMixin:
-    
-    # Define a method named `pandas_query`
-    # that receives an sql query as a string
-    # and returns the query's result
-    # as a pandas dataframe
-    def pandas_query(self, sql_query:str):
+    """Provides methods for executing SQL queries."""
+
+    def pandas_query(self, sql_query: str):
+        """Execute an SQL query and return the result as a pandas DataFrame."""
         con = connect(db_path)
         df = pd.read_sql_query(sql_query, con)
         con.close()
         return df
 
-    # Define a method named `query`
-    # that receives an sql_query as a string
-    # and returns the query's result as
-    # a list of tuples. (You will need
-    # to use an sqlite3 cursor)
-    def query(self, sql_query: str): 
+    def query(self, sql_query: str):
+        """Execute an SQL query and return the result as a list of tuples."""
         con = connect(db_path)
         cursor = con.cursor()
         cursor.execute(sql_query)
         results = cursor.fetchall()
         con.close()
         return results
-    
 
- 
- # Leave this code unchanged
 def query(func):
-    """
-    Decorator that runs a standard sql execution
-    and returns a list of tuples
-    """
-
+    """Decorator to execute a generated SQL query and return a list of tuples."""
     @wraps(func)
     def run_query(*args, **kwargs):
         query_string = func(*args, **kwargs)
