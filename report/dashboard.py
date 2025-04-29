@@ -129,15 +129,18 @@ def get():
     """Return default report for Employee with ID 1."""
     return report(1, Employee())
 
+
 @route('/employee/{id}')
 def get(id: str):
     """Return report page for an employee by ID."""
     return report(id, Employee())
 
+
 @route('/team/{id}')
 def get(id: str):
     """Return report page for a team by ID."""
     return report(id, Team())
+
 
 # Update dropdown options based on profile type
 @app.get('/update_dropdown{r}')
@@ -148,6 +151,7 @@ def update_dropdown(r):
         return dropdown(None, Team())
     elif profile_type == 'Employee':
         return dropdown(None, Employee())
+
 
 # Handle form submission and redirect
 @app.post('/update_data')
